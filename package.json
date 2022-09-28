@@ -1,6 +1,6 @@
 {
   "name": "my-app11",
-  "version": "0.0.1",
+  "version": "0.1.0",
   "private": true,
   "dependencies": {
     "@types/node": "^16.7.13",
