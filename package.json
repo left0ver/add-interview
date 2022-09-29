@@ -2,6 +2,7 @@
   "name": "my-app11",
   "version": "0.1.0",
   "private": true,
+  "description": "针对qqRot-interview项目，用来帮助你录入面试题",
   "dependencies": {
     "@types/node": "^16.7.13",
     "@types/react": "^18.0.0",
@@ -23,10 +24,17 @@
   "scripts": {
     "start": "react-scripts start",
     "build": "react-scripts build",
-    "test": "react-scripts test",
     "eject": "react-scripts eject",
+    "build:server": "rm -rf ./dist &&  tsc",
     "server:dev": "cross-env NODE_ENV=development nodemon --watch './server'  -e  ts,tsx  --exec esno  ./server/index.ts",
     "server:prod": "cross-env NODE_ENV=production esno  ./server/index.ts"
+  },
+  "script-description": {
+    "start": "启动前端项目",
+    "build": "前端项目的打包 --生成build文件夹",
+    "build:server": "后端项目的打包 -- 生成dist文件夹",
+    "server:dev": "开发环境下启动后端项目",
+    "server:prod": "生产环境下启动后端项目"
   },
   "eslintConfig": {
     "extends": [
