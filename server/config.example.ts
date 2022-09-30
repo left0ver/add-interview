@@ -10,8 +10,8 @@ interface DataBaseInfo {
 }
 // 生产环境下的数据库配置
 const productionDataBaseInfo: DataBaseInfo = {
-  host: '',
-  username: '',
+  host: 'localhost',
+  username: 'root',
   port: 3306,
   password: '',
   database: '',
