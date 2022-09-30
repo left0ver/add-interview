@@ -71,8 +71,10 @@ function App() {
       }
 
       reader.onload = async () => {
+        const formData = new FormData()
+        formData.append('file', file)
         try {
-          const { data } = await axios.post('/upload', file, {
+          const { data } = await axios.post('/upload', formData, {
             timeout: 5000,
             baseURL: baseUrl,
             onUploadProgress(event: ProgressEvent<FileReader>) {
