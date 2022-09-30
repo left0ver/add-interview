@@ -36,10 +36,10 @@ app.post('/submit', express.json(), async (req, res) => {
       .insert()
       .values({ question, isSend: false })
       .execute()
-    res.send({ type: 'success', message: '添加成功' })
+    res.json({ type: 'success', message: '添加成功' })
   } catch (error) {
     console.log(error)
-    res.send({ type: 'fail', message: '添加失败' })
+    res.json({ type: 'fail', message: '添加失败' })
   }
 })
 
@@ -64,10 +64,10 @@ app.post('/upload', (req, res) => {
         .insert()
         .values(insertData)
         .execute()
-      res.send({ type: 'success', message: '添加成功' })
+      res.json({ type: 'success', message: '添加成功' })
     } catch (error) {
       console.error(error)
-      res.send({ type: 'fail', message: '添加失败' })
+      res.json({ type: 'fail', message: '添加失败' })
     }
   })
 })
