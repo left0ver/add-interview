@@ -24,19 +24,19 @@
     "xss": "^1.0.14"
   },
   "scripts": {
-    "start": "react-scripts start",
+    "serve": "react-scripts start",
     "build": "rm -rf ./build && react-scripts build",
     "eject": "react-scripts eject",
-    "build:server": "rm -rf ./dist &&  tsc",
-    "server:dev": "cross-env NODE_ENV=development nodemon --watch './server'  -e  ts,tsx  --exec esno  ./server/index.ts",
-    "server:prod": "cross-env NODE_ENV=production nodemon --watch './server'  esno  ./server/index.ts"
+    "start": "cross-env NODE_ENV=production node ./dist/index.js",
+    "build:server": "rm -rf ./dist && cross-env NODE_ENV=production tsc",
+    "server:dev": "cross-env NODE_ENV=development nodemon --watch './server'  -e  ts,tsx  --exec esno  ./server/index.ts"
   },
   "script-description": {
-    "start": "启动前端项目",
-    "build": "前端项目的打包 --生成build文件夹",
-    "build:server": "后端项目的打包 -- 生成dist文件夹",
-    "server:dev": "开发环境下启动后端项目",
-    "server:prod": "生产环境下启动后端项目"
+    "serve": "开发环境下启动前端项目",
+    "build": "打包前端项目 --生成build文件夹",
+    "start": "启动打包后的后端项目,用于pm2部署",
+    "build:server": "打包后端项目 -- 生成dist文件夹",
+    "server:dev": "开发环境下启动后端项目"
   },
   "eslintConfig": {
     "extends": [

@@ -3,12 +3,11 @@ import express from 'express'
 import cors from 'cors'
 import { DataSource } from 'typeorm'
 import { Question } from './entity/Question'
-import { databaseInfo } from './config'
+import { databaseInfo, PORT } from './config'
 interface InsertData {
   question: string
   isSend: boolean
 }
-const PORT = 12500
 const AppDataSource = new DataSource({
   ...databaseInfo,
   type: 'mysql',

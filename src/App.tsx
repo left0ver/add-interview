@@ -5,10 +5,10 @@ import toast, { Toaster } from 'react-hot-toast'
 import debounce from 'lodash.debounce'
 import { useDropzone } from 'react-dropzone'
 import { Line } from 'rc-progress'
+import { baseUrl } from './config'
 import './App.css'
 
 function App() {
-  const baseUrl: string = 'http://localhost:12500'
   let color: string = '#E57373'
   let icon: string = '❗'
   let message: string = '发送失败'
