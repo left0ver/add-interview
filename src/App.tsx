@@ -8,6 +8,10 @@ import { Line } from 'rc-progress'
 import { baseUrl } from './config'
 import './App.css'
 
+interface ResponseData {
+  type: 'success' | 'fail'
+  message: string
+}
 function App() {
   let color: string = '#E57373'
   let icon: string = '❗'
@@ -42,10 +46,7 @@ function App() {
       return
     }
     try {
-      const { data } = await axios.post<{
-        type: 'success' | 'fail'
-        message: string
-      }>(
+      const { data } = await axios.post<ResponseData>(
         '/submit',
         { question: xss(question.trim()) },
         { baseURL: baseUrl, timeout: 5000 },
@@ -74,12 +75,11 @@ function App() {
         const formData = new FormData()
         formData.append('file', file)
         try {
-          const { data } = await axios.post('/upload', formData, {
+          const { data } = await axios.post<ResponseData>('/upload', formData, {
             timeout: 5000,
             baseURL: baseUrl,
             onUploadProgress(event: ProgressEvent<FileReader>) {
               setPercent(Math.round((event.loaded / event.total) * 100))
-              console.log(event)
             },
           })
           color = data.type === 'success' ? '#9CCC65' : '#E57373'
@@ -97,6 +97,7 @@ function App() {
   const { getRootProps, getInputProps } = useDropzone({
     onDrop,
     maxSize: 1024 * 1024 * 5, // 5M
+    // 只允许上传.txt
     accept: { 'text/plain': ['.txt'] },
     // 上传的不是.txt文件
     onDropRejected() {

@@ -9,6 +9,7 @@
     "@types/react-dom": "^18.0.0",
     "axios": "^0.27.2",
     "cors": "^2.8.5",
+    "dotenv": "^16.0.3",
     "express": "^4.18.1",
     "lodash.debounce": "^4.0.8",
     "mysql2": "^2.3.3",
@@ -24,19 +25,19 @@
     "xss": "^1.0.14"
   },
   "scripts": {
-    "serve": "react-scripts start",
+    "dev": "HTTPS=true SSL_CRT_FILE=$HOME/.cert/cert.pem SSL_KEY_FILE=$HOME/.cert/key.pem react-scripts start",
     "build": "rm -rf ./build && react-scripts build",
     "eject": "react-scripts eject",
-    "start": "cross-env NODE_ENV=production node ./dist/index.js",
-    "build:server": "rm -rf ./dist && cross-env NODE_ENV=production tsc",
-    "server:dev": "cross-env NODE_ENV=development nodemon --watch './server'  -e  ts,tsx  --exec esno  ./server/index.ts"
+    "start": "node ./dist/index.js dotenv_config_path=./.env.prod",
+    "build:server": "rm -rf ./dist && tsc",
+    "dev:server": "nodemon --watch './server'  -e  ts,tsx  --exec esno  ./server/index.ts dotenv_config_path=./.env.dev"
   },
   "script-description": {
-    "serve": "开发环境下启动前端项目",
+    "dev": "开发环境下启动前端项目",
     "build": "打包前端项目 --生成build文件夹",
     "start": "启动打包后的后端项目,用于pm2部署",
     "build:server": "打包后端项目 -- 生成dist文件夹",
-    "server:dev": "开发环境下启动后端项目"
+    "dev:server": "开发环境下启动后端项目"
   },
   "eslintConfig": {
     "extends": [
@@ -58,7 +59,6 @@
   "devDependencies": {
     "@types/cors": "^2.8.12",
     "@types/lodash.debounce": "^4.0.7",
-    "cross-env": "^7.0.3",
     "esno": "^0.16.3",
     "leftover-prettier": "^0.0.4",
     "nodemon": "^2.0.20",

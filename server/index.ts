@@ -1,13 +1,28 @@
 import 'reflect-metadata'
+import fs from 'fs'
 import express from 'express'
 import cors from 'cors'
+import https from 'https'
+import dotenv from 'dotenv'
 import { DataSource } from 'typeorm'
 import { Question } from './entity/Question'
 import { databaseInfo, PORT } from './config'
+
 interface InsertData {
   question: string
   isSend: boolean
 }
+
+const args = process.argv.slice(2)
+let dotenvConfigPath: string = ''
+for (const arg of args) {
+  const value = arg.split('=')
+  if (value[0] === 'dotenv_config_path') {
+    dotenvConfigPath = value[1]
+  }
+}
+dotenv.config({ path: dotenvConfigPath, encoding: 'utf-8' })
+const isHttps = process.env.HTTPS === 'true' ? true : false
 const AppDataSource = new DataSource({
   ...databaseInfo,
   type: 'mysql',
@@ -28,6 +43,7 @@ const questionRepository = AppDataSource.getRepository(Question)
 const app = express()
 app.use(cors())
 
+// 手动录入
 app.post('/submit', express.json(), async (req, res) => {
   const { question } = req.body
   try {
@@ -43,6 +59,7 @@ app.post('/submit', express.json(), async (req, res) => {
   }
 })
 
+// 文件上传
 app.post('/upload', (req, res) => {
   const enc = new TextDecoder('utf-8')
   let result: string = ''
@@ -72,6 +89,18 @@ app.post('/upload', (req, res) => {
   })
 })
 
-app.listen(PORT, '127.0.0.1', () => {
-  console.log('server start')
-})
+if (isHttps) {
+  // https
+  const httpsOption = {
+    key: fs.readFileSync(process.env.HTTPS_KEY || ''),
+    cert: fs.readFileSync(process.env.HTTPS_CERT || ''),
+  }
+  https.createServer(httpsOption, app).listen(PORT, '0.0.0.0', () => {
+    console.log('server start')
+  })
+} else {
+  // http
+  app.listen(PORT, '0.0.0.0', () => {
+    console.log('server start')
+  })
+}

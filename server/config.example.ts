@@ -24,5 +24,6 @@ const developmentDataBaseInfo: DataBaseInfo = {
   password: '', //密码
   database: '', //对应的数据库的名称
 }
+const PORT = 12500 //监听的端口号
 const databaseInfo = __DEV__ ? developmentDataBaseInfo : productionDataBaseInfo
-export { databaseInfo }
+export { databaseInfo, PORT }
