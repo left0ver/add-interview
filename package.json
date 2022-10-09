@@ -2,7 +2,7 @@
   "name": "my-app11",
   "version": "0.2.0",
   "private": true,
-  "description": "针对qqRot-interview项目，用来帮助你录入面试题",
+  "description": "针对qqRot-interview项目，用来帮助使用者更好地录入面试题",
   "dependencies": {
     "@types/node": "^16.7.13",
     "@types/react": "^18.0.0",
