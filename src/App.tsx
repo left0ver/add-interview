@@ -54,6 +54,7 @@ function App() {
       color = data.type === 'success' ? '#9CCC65' : '#E57373'
       icon = data.type === 'success' ? '🎉' : '❗'
       message = data.message || '发送失败'
+      setQuestion('')
       notify(message, color, icon)
     } catch (error) {
       notify(message, color, icon)
@@ -130,6 +131,7 @@ function App() {
             maxLength={1024}
             minLength={1}
             cols={45}
+            value={question}
             rows={15}></textarea>
         </div>
         <div className="submit-wrap">
