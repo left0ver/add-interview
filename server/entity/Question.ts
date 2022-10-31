@@ -1,4 +1,5 @@
-import { Entity, PrimaryGeneratedColumn, Column } from 'typeorm'
+import { Entity, PrimaryGeneratedColumn, Column, ManyToMany ,JoinTable} from 'typeorm'
+import {Tag} from './Tag'
 @Entity('question')
 export class Question {
   @PrimaryGeneratedColumn()
@@ -13,4 +14,7 @@ export class Question {
     default: false,
   })
   isSend: boolean
+  @ManyToMany(type => Tag, tag => tag.questions)
+  @JoinTable()
+  tags: Tag[]
 }

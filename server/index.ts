@@ -7,7 +7,7 @@ import dotenv from 'dotenv'
 import { DataSource } from 'typeorm'
 import { Question } from './entity/Question'
 import { databaseInfo, PORT } from './config'
-
+import {Tag} from './entity/Tag'
 interface InsertData {
   question: string
   isSend: boolean
@@ -26,18 +26,19 @@ const isHttps = process.env.HTTPS === 'true' ? true : false
 const AppDataSource = new DataSource({
   ...databaseInfo,
   type: 'mysql',
-  entities: [Question],
-  synchronize: true,
+  entities: [Question,Tag],
+  synchronize: false,
   logging: false,
 })
 
-AppDataSource.initialize()
-  .then(() => {
-    console.log('Data Source init successful')
-  })
-  .catch(err => {
-    console.error('Error during Data Source initialization:', err)
-  })
+!AppDataSource.isInitialized &&
+  AppDataSource.initialize()
+    .then(() => {
+      console.log('Data Source init successful')
+    })
+    .catch(err => {
+      console.error('Error during Data Source initialization:', err)
+    })
 
 const questionRepository = AppDataSource.getRepository(Question)
 const app = express()
