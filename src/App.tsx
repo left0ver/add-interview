@@ -34,7 +34,7 @@ const notify = (message: string, color: string, icon: string) => {
 }
 const parse = (inputQuestion: string, inputTags: string) => {
   const question = inputQuestion
-  const tags = xss(inputTags).split(',')
+  const tags = xss(inputTags).split(/,|，/)
   return { question, tags }
 }
 
