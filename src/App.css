@@ -1,4 +1,25 @@
-.container {
+.app-container {
+  display: flex;
+}
+.app-container > .database-info {
+  display: flex;
+  flex-direction: column;
+  margin-left: 40px;
+}
+.app-container > .database-info > .database-input {
+  margin-top: 10px;
+  color: #726c6c;
+  display: flex;
+  justify-content: space-between;
+}
+.app-container > .database-info > .database-input > input {
+  outline: none;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  height: 25px;
+  margin-left: 5px;
+}
+.upload-container {
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -6,7 +27,6 @@
   bottom: 10%;
   left: 50%;
   transform: translateX(-50%);
-  width: 100%;
   height: 100%;
 }
 .upload {
