@@ -224,7 +224,7 @@ function App() {
             <div className="icon">+</div>
             <input {...getInputProps()} />
             <div>
-              <span>拖拽或者点击上传txt文件(文件中一行一个题目)</span>
+              <span>拖拽或者点击上传.xlsx，.csv，.xls类型的文件,最大10M</span>
             </div>
           </div>
           <div className="progress-wrap">
@@ -258,7 +258,17 @@ function App() {
           </footer>
         </div>
       </div>
+      <div className='tips'>
+        tips: <br/>
+        0. 服务器ip默认localhost,数据库名称默认为qqrot,用户名默认为root,端口号默认为3306 <br/><br/>
+        1. 如果你是手动输入面试题录入，请按这个格式：题目-分类1,分类2,分类3 <br/>
+        eg: ts 中 interface 和 type的区别-typescript,js <br/>
+        没有按照此格式可能会导致不能正确地存入数据库 <br/><br/>
 
+       2. 如果你是上传excel,则只能上传.xlsx，.csv，.xls扩展名结尾的文件 <br/>
+        文件格式如图, 分类以逗号隔开,务必按此格式正确填写 <br/><br/>
+        <img src="https://leftover-md.oss-cn-guangzhou.aliyuncs.com/img-md/20221103230630-2022-11-03.png" alt="tips" width={600} height={200} />
+      </div>
       <Toaster />
     </>
   )
