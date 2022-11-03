@@ -1,4 +1,4 @@
-import React, { ChangeEventHandler, useCallback, useState } from 'react'
+import React, { ChangeEventHandler, useCallback, useEffect, useState } from 'react'
 import axios from 'axios'
 import xss from 'xss'
 import toast, { Toaster } from 'react-hot-toast'
@@ -6,7 +6,6 @@ import debounce from 'lodash.debounce'
 import { read, utils } from 'xlsx'
 import { useDropzone } from 'react-dropzone'
 import { Line } from 'rc-progress'
-import { baseUrl } from './config'
 import './App.css'
 
 interface ResponseData {
@@ -43,7 +42,19 @@ function App() {
   let color: string = '#E57373'
   let icon: string = '❗'
   let message: string = '发送失败'
-
+  const baseUrl = process.env.BASE_URL
+  const isHttps = process.env.HTTPS ==='true' ? true :false
+  useEffect(()=>{
+    if (isHttps) {
+      if (!baseUrl?.startsWith('https')) {
+        notify('您设置了https为true,请将请求的url替换为https',color,icon)
+      }
+    }else {
+      //非https
+      if (baseUrl?.startsWith('https')) {
+        notify('您设置了https为false,请将请求的url替换为http',color,icon)
+      }
+    }},[baseUrl, color, icon, isHttps])
   const [inputData, setInputData] = useState<string>('')
   const [percent, setPercent] = useState<number>(0)
   const [ip, setIp] = useState('')

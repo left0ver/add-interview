@@ -9,15 +9,8 @@ import { Tag } from './entity/Tag'
 import { PORT } from './config'
 import { initDatabase } from './utils/index'
 
-const args = process.argv.slice(2)
-let dotenvConfigPath: string = ''
-for (const arg of args) {
-  const value = arg.split('=')
-  if (value[0] === 'dotenv_config_path') {
-    dotenvConfigPath = value[1]
-  }
-}
-dotenv.config({ path: dotenvConfigPath, encoding: 'utf-8' })
+
+dotenv.config()
 const isHttps = process.env.HTTPS === 'true' ? true : false
 
 const app = express()
@@ -70,8 +63,8 @@ app.post('/upload', express.json(), async (req, res) => {
 if (isHttps) {
   // https
   const httpsOption = {
-    key: fs.readFileSync(process.env.HTTPS_KEY || ''),
-    cert: fs.readFileSync(process.env.HTTPS_CERT || ''),
+    key: fs.readFileSync(process.env.SSL_KEY_FILE || ''),
+    cert: fs.readFileSync(process.env.SSL_CRT_FILE || ''),
   }
   https.createServer(httpsOption, app).listen(PORT, '0.0.0.0', () => {
     console.log('server start')
