@@ -6,13 +6,12 @@ import https from 'https'
 import dotenv from 'dotenv'
 import { Question } from './entity/Question'
 import { Tag } from './entity/Tag'
-import { PORT } from './config'
 import { initDatabase } from './utils/index'
 
 
 dotenv.config()
 const isHttps = process.env.HTTPS === 'true' ? true : false
-
+const PORT = process.env.PORT ? parseInt(process.env.PORT) : 12500
 const app = express()
 app.use(cors())
 
@@ -67,7 +66,7 @@ if (isHttps) {
     cert: fs.readFileSync(process.env.SSL_CRT_FILE || ''),
   }
   https.createServer(httpsOption, app).listen(PORT, '0.0.0.0', () => {
-    console.log('server start')
+    console.log(`server start and listening on port ${PORT}`)
   })
 } else {
   // http
