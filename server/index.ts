@@ -8,12 +8,6 @@ import { Question } from './entity/Question'
 import { Tag } from './entity/Tag'
 import { PORT } from './config'
 import { initDatabase } from './utils/index'
-import type { Repository } from 'typeorm'
-
-interface InsertData {
-  question: string
-  isSend: boolean
-}
 
 const args = process.argv.slice(2)
 let dotenvConfigPath: string = ''
@@ -26,84 +20,51 @@ for (const arg of args) {
 dotenv.config({ path: dotenvConfigPath, encoding: 'utf-8' })
 const isHttps = process.env.HTTPS === 'true' ? true : false
 
-
 const app = express()
 app.use(cors())
 
-// 手动录入
-// app.post('/submit', express.json(), async (req, res) => {
-//   const { question } = req.body
-//   try {
-//     await questionRepository
-//       .createQueryBuilder()
-//       .insert()
-//       .values({ question, isSend: false })
-//       .execute()
-//     res.json({ type: 'success', message: '添加成功' })
-//   } catch (error) {
-//     console.log(error)
-//     res.json({ type: 'fail', message: '添加失败' })
-//   }
-// })
+app.post('/upload', express.json(), async (req, res) => {
+  const { model, databaseInfo } = req.body
+  if (databaseInfo.password.trim() === '') {
+    res.json({ type: "fail", message: "缺少密码" })
+    return;
+  }
 
-// 文件上传
-// app.post('/upload', (req, res) => {
-//   const enc = new TextDecoder('utf-8')
-//   let result: string = ''
-//   req.on('data', chunk => {
-//     result += enc.decode(chunk)
-//   })
-//   req.on('end', async () => {
-//     const rowData = result.split('\n')
-//     const insertData: InsertData[] = []
-//     for (let i = 0; i < rowData.length; i++) {
-//       const question: string = rowData[i].trim()
-//       if (question !== '') {
-//         insertData.push({ question, isSend: false })
-//       }
-//     }
-//     try {
-//       await questionRepository
-//         .createQueryBuilder()
-//         .insert()
-//         .values(insertData)
-//         .execute()
-//       res.json({ type: 'success', message: '添加成功' })
-//     } catch (error) {
-//       console.error(error)
-//       res.json({ type: 'fail', message: '添加失败' })
-//     }
-//   })
-// })
+  databaseInfo.host = databaseInfo.host || 'localhost'
+  databaseInfo.port = databaseInfo.port || 3306
+  databaseInfo.username = databaseInfo.username || 'root'
+  databaseInfo.database = databaseInfo.database || 'qqrot'
 
-app.post('/upload1', express.json(), async (req, res) => {
-  const AppDataSource = await initDatabase(true)
+  const AppDataSource = await initDatabase(databaseInfo, true)
   const questionRepository = AppDataSource.getRepository(Question)
   const tagRepository = AppDataSource.getRepository(Tag)
-  const { model } = req.body
-  for (let i = 0, len = model.length; i < len; i++) {
-    const inputQuestion = model[i].question
-    const inputTags: Tag[] = []
-    for (let j = 0; j < model[i].tags.length; j++) {
-      // 处理tag
-      const tagName = model[i].tags[j]
-      const maxId = await tagRepository.createQueryBuilder('tag').getCount()
-      const tagResult = await tagRepository.createQueryBuilder('tag').select('tag.tagId').where({ tagName }).getOne()
-      // 如果已经有了这个分类，则使用这个分类，否则新建分类
-      const id = tagResult?.tagId || maxId + 1
-      const tag = new Tag()
-      tag.tagId = id
-      tag.tagName = tagName
-      await tagRepository.save(tag, { reload: true })
-      inputTags.push(tag)
+  try {
+    for (let i = 0, len = model.length; i < len; i++) {
+      const inputQuestion = model[i].question
+      const inputTags: Tag[] = []
+      for (let j = 0; j < model[i].tags.length; j++) {
+        // 处理tag
+        const tagName = model[i].tags[j]
+        const maxId = await tagRepository.createQueryBuilder('tag').getCount()
+        const tagResult = await tagRepository.createQueryBuilder('tag').select('tag.tagId').where({ tagName }).getOne()
+        // 如果已经有了这个分类，则使用这个分类，否则新建分类
+        const id = tagResult?.tagId || maxId + 1
+        const tag = new Tag()
+        tag.tagId = id
+        tag.tagName = tagName
+        await tagRepository.save(tag, { reload: true })
+        inputTags.push(tag)
+      }
+      const question = new Question()
+      question.question = inputQuestion
+      question.tags = inputTags
+      question.isSend = false
+      await questionRepository.save(question)
     }
-    const question = new Question()
-    question.question = inputQuestion
-    question.tags = inputTags
-    question.isSend = false
-    await questionRepository.save(question)
+    res.json({ type: 'success', message: '添加成功' })
+  } catch (error) {
+    res.json({ type: 'fail', message: '添加失败' })
   }
-  res.send("success")
 })
 
 if (isHttps) {
