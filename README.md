@@ -1,3 +1,7 @@
+<div align="center">
+<img src="https://visitor.leftover.cn?id=robot-bingbing.add-interview"/>
+</div>
+
 # Introduction
 
 [qqRot-interview](https://github.com/robot-bingbing/qqRot-interview)项目是我开发的一个 qq 机器人，用来每日定时在 QQ 群里发送面试题，而本项目是用来帮助使用者更好地向数据库中录入面试题
