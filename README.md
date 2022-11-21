@@ -16,6 +16,21 @@
 - :beer: 支持 https 的部署
 - :zap: 快速部署，只需简单修改配置文件即可
 
+# Docker 部署
+
+```
+1.首先确认您是否需要部署到https上，如若需要，需要准备好ssl证书
+2.
+git clone https://github.com/robot-bingbing/add-interview
+cd add-interview
+# 根据文件里的要求修改配置文件即可，只需修改HTTPS和BASE_URL两个环境变量
+cp .env.example .env
+# 如果不使用HTTPS，则可以不设置SSL_KEY_FILE和SSL_CRT_FILE这两个环境变量
+3. docker run -it --name add-interview-node -p 12500:12500 -e HTTPS=xxx -e SSL_KEY_FILE=xxx -e SSL_CRT_FILE=xxx registry.cn-hangzhou.aliyuncs.com/left0ver/add-interview-node:latest
+4. npm run build
+5. docker run -it  --name add-interview-nginx -v $PWD/build:/usr/share/nginx/html -p 80:80 nginx:1.22.1-alpine
+```
+
 # 部署
 
 ```shell
