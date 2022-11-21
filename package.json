@@ -1,6 +1,6 @@
 {
   "name": "add-interview",
-  "version": "0.4.1",
+  "version": "0.4.2",
   "private": true,
   "description": "针对qqRot-interview项目，用来帮助使用者更好地录入面试题",
   "dependencies": {
@@ -76,7 +76,7 @@
     "start": "node ./dist/index.js",
     "build:server": "rm -rf ./dist && tsc",
     "dev:server": "nodemon --watch './server'  -e  ts,tsx  --exec esno  ./server/index.ts",
-    "build:image":"docker build -f Dockerfile -t left0ver/add-interview-node:$npm_package_version . && docker push left0ver/add-interview-node:$npm_package_version",
+    "build:image": "docker build -f Dockerfile -t left0ver/add-interview-node:$npm_package_version . && docker push left0ver/add-interview-node:$npm_package_version",
     "prepublishOnly": "npm run build:image"
   },
   "script-description": {
